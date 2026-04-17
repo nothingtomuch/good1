@@ -158,8 +158,8 @@ export default function SynonymAntonymArena({ onExit, onFinish }: Props) {
         <div className="max-w-4xl mx-auto space-y-12">
            <div className="text-center space-y-4">
               <span className="text-[11px] font-mono tracking-[0.4em] uppercase text-[#718096] font-bold">Target Lexeme (Set {index + 1})</span>
-              <div className="p-6 md:p-12 border-4 border-[#1A365D]">
-                <h3 className="text-5xl md:text-7xl font-black tracking-tighter uppercase text-[#1A365D]">
+              <div className="p-12 border-4 border-[#1A365D]">
+                <h3 className="text-7xl font-black tracking-tighter uppercase text-[#1A365D]">
                   {current.word} <span className="text-[#D69E2E] font-mono opacity-60">({current.synonymHint})</span>
                 </h3>
               </div>
@@ -178,7 +178,7 @@ export default function SynonymAntonymArena({ onExit, onFinish }: Props) {
                     value={synonymInput}
                     onChange={e => setSynonymInput(e.target.value)}
                     placeholder={`Starting with ${current.synonymHint}...`}
-                    className="w-full bg-transparent text-3xl font-bold uppercase tracking-tight outline-none border-b-2 border-[#1A365D]/10 focus:border-[#1A365D] py-2 text-[#1A365D]"
+                    className="w-full bg-transparent text-xl md:text-3xl font-bold uppercase tracking-tight outline-none border-b-2 border-[#1A365D]/10 focus:border-[#1A365D] py-2 text-[#1A365D]"
                   />
                   {gameState === 'RESULT' && (
                     <div className="mt-4 flex items-center justify-between">
@@ -201,7 +201,7 @@ export default function SynonymAntonymArena({ onExit, onFinish }: Props) {
                     value={antonymInput}
                     onChange={e => setAntonymInput(e.target.value)}
                     placeholder="Enter Antonym..."
-                    className="w-full bg-transparent text-3xl font-bold uppercase tracking-tight outline-none border-b-2 border-[#1A365D]/10 focus:border-[#1A365D] py-2 text-[#1A365D]"
+                    className="w-full bg-transparent text-xl md:text-3xl font-bold uppercase tracking-tight outline-none border-b-2 border-[#1A365D]/10 focus:border-[#1A365D] py-2 text-[#1A365D]"
                   />
                   {gameState === 'RESULT' && (
                     <div className="mt-4 flex items-center justify-between">
