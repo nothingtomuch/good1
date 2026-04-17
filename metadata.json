@@ -1,6 +1,5 @@
 {
   "name": "Spell Bee Arena",
-  "description": "A mock Spell Bee competition platform with oral rounds, including Spell It, Synonym/Antonym, Aural Skills, and Segmentals.",
-  "requestFramePermissions": ["microphone"],
-  "majorCapabilities": ["text-to-speech"]
+  "description": "Comprehensive Spell Bee training platform featuring Spell It, Synonyms/Antonyms, Aural Skills, Segmentals, and Part of Speech rounds with 1000+ training exercises.",
+  "requestFramePermissions": ["microphone"]
 }
