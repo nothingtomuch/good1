@@ -68,6 +68,8 @@ export default function SegmentalsArena({ onExit, onFinish }: Props) {
     }
   }, [transcript, gameState, current.options.length, handleSelect]);
 
+  if (!current) return null;
+
   if (gameState === 'GAMEOVER') {
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 bg-[#F7FAFC] text-[#1A365D]">
@@ -132,12 +134,12 @@ export default function SegmentalsArena({ onExit, onFinish }: Props) {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center space-y-16">
+      <main className="flex-1 flex flex-col items-center justify-center space-y-12 md:space-y-16 py-4 md:py-8">
          <div className="text-center w-full">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-[#718096] font-black mb-8 font-mono border-b-2 border-dashed border-[#E2E8F0] pb-2 inline-block">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#718096] font-black mb-6 md:mb-8 font-mono border-b-2 border-dashed border-[#E2E8F0] pb-2 inline-block">
                 Identify Phonetic Sound of Underlined Component
             </p>
-            <div className="text-8xl font-sans font-black tracking-tighter text-[#1A365D] flex items-center justify-center gap-4 py-8">
+            <div className="text-6xl md:text-8xl font-sans font-black tracking-tighter text-[#1A365D] flex items-center justify-center gap-2 md:gap-4 py-4 md:py-8">
                {current.word.split('').map((char, i) => {
                   const searchStr = current.underlinedLetter;
                   const startPos = current.word.indexOf(searchStr);
@@ -146,7 +148,7 @@ export default function SegmentalsArena({ onExit, onFinish }: Props) {
                   return (
                     <span key={i} className={cn(
                         "relative",
-                        isPart && "after:absolute after:bottom-0 after:left-0 after:w-full after:h-4 after:bg-[#D69E2E]/30 after:-z-10 bg-[#D69E2E]/10"
+                        isPart && "after:absolute after:bottom-0 after:left-0 after:w-full after:h-2 md:after:h-4 after:bg-[#D69E2E]/30 after:-z-10 bg-[#D69E2E]/10"
                     )}>
                         {char}
                     </span>
@@ -155,7 +157,7 @@ export default function SegmentalsArena({ onExit, onFinish }: Props) {
             </div>
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl px-8">
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-4xl px-4 md:px-8">
             {current.options.map((opt, idx) => {
                 const isCorrect = idx === current.answerIndex;
                 const isSelected = idx === selectedIdx;
@@ -166,9 +168,9 @@ export default function SegmentalsArena({ onExit, onFinish }: Props) {
                         disabled={gameState !== 'ACTIVE'}
                         onClick={() => handleSelect(idx)}
                         className={cn(
-                            "group p-10 border-2 transition-all flex flex-col items-center justify-center gap-4 relative overflow-hidden gb-card",
+                            "group p-6 md:p-10 border-2 transition-all flex flex-col items-center justify-center gap-3 md:gap-4 relative overflow-hidden gb-card min-h-[140px]",
                             gameState === 'ACTIVE' 
-                              ? "border-[#E2E8F0] hover:border-[#1A365D] hover:shadow-2xl hover:-translate-y-2" 
+                              ? "border-[#E2E8F0] hover:border-[#1A365D]" 
                               : isCorrect 
                                 ? "border-[#38A169] bg-green-50 text-[#1A365D] z-10" 
                                 : isSelected 
@@ -176,7 +178,7 @@ export default function SegmentalsArena({ onExit, onFinish }: Props) {
                                   : "opacity-40 grayscale pointer-events-none"
                         )}
                     >
-                        <span className="text-5xl font-mono font-black italic">{opt.sound}</span>
+                        <span className="text-4xl md:text-5xl font-mono font-black italic">{opt.sound}</span>
                         <div className="w-full h-px bg-[#E2E8F0] my-2" />
                         <span className="text-[10px] font-mono uppercase text-[#718096] font-bold tracking-widest">Option {opt.label}</span>
                     </button>

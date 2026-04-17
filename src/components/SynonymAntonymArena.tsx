@@ -158,8 +158,8 @@ export default function SynonymAntonymArena({ onExit, onFinish }: Props) {
         <div className="max-w-4xl mx-auto space-y-12">
            <div className="text-center space-y-4">
               <span className="text-[11px] font-mono tracking-[0.4em] uppercase text-[#718096] font-bold">Target Lexeme (Set {index + 1})</span>
-              <div className="p-12 border-4 border-[#1A365D]">
-                <h3 className="text-7xl font-black tracking-tighter uppercase text-[#1A365D]">
+              <div className="p-6 md:p-12 border-4 border-[#1A365D]">
+                <h3 className="text-5xl md:text-7xl font-black tracking-tighter uppercase text-[#1A365D]">
                   {current.word} <span className="text-[#D69E2E] font-mono opacity-60">({current.synonymHint})</span>
                 </h3>
               </div>

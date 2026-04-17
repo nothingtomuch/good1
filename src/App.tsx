@@ -56,15 +56,15 @@ export default function App() {
                 <GraduationCap size={16} className="text-[#1A365D]" />
                 <span className="text-[11px] font-mono uppercase tracking-[0.2em] opacity-60">MaRRS International Series</span>
               </div>
-              <h2 className="text-6xl font-bold tracking-tighter leading-[0.9] text-[#1A365D] border-l-4 border-[#D69E2E] pl-6 py-2 uppercase">
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter leading-[0.9] text-[#1A365D] border-l-4 border-[#D69E2E] pl-6 py-2 uppercase">
                 Bee Arena<br/>Practice Hub
               </h2>
-              <p className="mt-6 text-sm leading-relaxed text-[#2D3748]/70">
+              <p className="mt-6 text-sm leading-relaxed text-[#2D3748]/70 hidden sm:block">
                 Master professional spelling mechanics. Practice high-frequency vocabulary and phonetics in an industry-standard competition environment.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 auto-rows-fr">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-fr">
               {rounds.map(round => (
                 <RoundCard 
                   key={round.id}
@@ -82,22 +82,30 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center p-8 bg-[#F7FAFC]">
-      <div className="w-full max-w-[1200px] h-full max-h-[800px] bg-white border-2 border-[#1A365D] grid grid-cols-[280px_1fr] shadow-2xl overflow-hidden rounded-sm">
-        {/* Sidebar */}
-        <aside className="bg-[#1A365D] text-white p-6 flex flex-col h-full">
+    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-[#F7FAFC] md:p-8">
+      <div className={cn(
+        "w-full max-w-[1200px] bg-white border-[#1A365D] grid shadow-2xl overflow-hidden rounded-sm transition-all duration-500",
+        activeRound 
+          ? "h-[100dvh] md:h-full md:max-h-[800px] border-y-2 md:border-2 grid-cols-1 md:grid-cols-[280px_1fr]" 
+          : "h-[100dvh] md:h-auto md:max-h-[800px] border-y-2 md:border-2 grid-cols-1 md:grid-cols-[280px_1fr]"
+      )}>
+        {/* Sidebar - Hidden on mobile when round is active to save space */}
+        <aside className={cn(
+          "bg-[#1A365D] text-white p-6 flex-col h-full md:flex transition-all duration-300",
+          activeRound ? "hidden md:flex" : "flex"
+        )}>
           <div className="border-b border-white/10 pb-5 mb-8">
             <div className="text-[1.2rem] font-extrabold tracking-widest text-[#D69E2E] uppercase">Spell Bee</div>
             <div className="text-[0.7rem] opacity-70 mt-1 uppercase tracking-tighter">Arena Practice Module</div>
           </div>
 
-          <nav className="flex flex-col gap-3">
+          <nav className="flex flex-col gap-3 overflow-y-auto custom-scrollbar pr-2">
             {rounds.map((round) => (
               <button
                 key={round.id}
                 onClick={() => setActiveRound(round.id as Round)}
                 className={cn(
-                  "p-4 border transition-all text-left flex justify-between items-center group",
+                  "p-4 border transition-all text-left flex justify-between items-center group shrink-0",
                   activeRound === round.id 
                     ? "bg-white text-[#1A365D] border-white font-bold" 
                     : "border-white/10 text-white/80 hover:bg-white/5"
@@ -129,15 +137,41 @@ export default function App() {
         </aside>
 
         {/* Main Stage */}
-        <main className="h-full relative overflow-hidden bg-white px-10 py-8">
+        <main className={cn(
+          "h-full relative overflow-hidden bg-white px-4 py-8 md:px-10 md:py-8 transition-all flex flex-col",
+          !activeRound && "md:block"
+        )}>
+          {!activeRound && (
+            <div className="md:hidden flex justify-between items-center mb-8 pb-4 border-b border-[#E2E8F0]">
+              <div className="flex flex-col">
+                <span className="text-[10px] uppercase opacity-40 font-mono tracking-widest leading-none mb-1">Total Points</span>
+                <span className="font-mono text-2xl font-bold text-[#D69E2E] leading-none">
+                  {totalScore.toString().padStart(4, '0')}
+                </span>
+              </div>
+              <div className="text-right">
+                <div className="text-[1rem] font-black text-[#1A365D] uppercase leading-none">Arena Hub</div>
+                <div className="text-[10px] opacity-60 uppercase tracking-tighter">Mobile V1.2.0</div>
+              </div>
+            </div>
+          )}
+          
           <AnimatePresence mode="wait">
             <motion.div
               key={activeRound || 'menu'}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="h-full overflow-y-auto pr-2 custom-scrollbar"
+              className="flex-1 overflow-y-auto custom-scrollbar"
             >
+              {activeRound && (
+                <button 
+                  onClick={() => setActiveRound(null)}
+                  className="md:hidden mb-6 flex items-center gap-2 text-[#1A365D] font-bold text-xs uppercase tracking-widest"
+                >
+                  <ChevronLeft size={16} /> Back to Hub
+                </button>
+              )}
               {renderArena()}
             </motion.div>
           </AnimatePresence>

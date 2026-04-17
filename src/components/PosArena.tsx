@@ -54,18 +54,20 @@ export default function PosArena({ onExit, onFinish }: Props) {
   }, [index, shuffledPos.length, resetTimer]);
 
   // Handle Voice Input
-  if (transcript && gameState === 'ACTIVE') {
-    const speechText = transcript.toUpperCase();
-    let foundIdx = -1;
-    if (speechText.includes('OPTION A') || speechText === 'A') foundIdx = 0;
-    else if (speechText.includes('OPTION B') || speechText === 'B') foundIdx = 1;
-    else if (speechText.includes('OPTION C') || speechText === 'C') foundIdx = 2;
-    else if (speechText.includes('OPTION D') || speechText === 'D') foundIdx = 3;
+  useEffect(() => {
+    if (transcript && gameState === 'ACTIVE') {
+      const speechText = transcript.toUpperCase();
+      let foundIdx = -1;
+      if (speechText.includes('OPTION A') || speechText === 'A') foundIdx = 0;
+      else if (speechText.includes('OPTION B') || speechText === 'B') foundIdx = 1;
+      else if (speechText.includes('OPTION C') || speechText === 'C') foundIdx = 2;
+      else if (speechText.includes('OPTION D') || speechText === 'D') foundIdx = 3;
 
-    if (foundIdx !== -1 && foundIdx < current.options.length) {
-      handleSelect(foundIdx);
+      if (foundIdx !== -1 && foundIdx < current.options.length) {
+        handleSelect(foundIdx);
+      }
     }
-  }
+  }, [transcript, gameState, current.options.length, handleSelect]);
 
   if (gameState === 'GAMEOVER') {
     return (
@@ -127,19 +129,19 @@ export default function PosArena({ onExit, onFinish }: Props) {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center space-y-12">
-         <div className="text-center w-full max-w-2xl">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-[#718096] font-black mb-8 font-mono border-b-2 border-dashed border-[#E2E8F0] pb-2 inline-block">
+      <main className="flex-1 flex flex-col items-center justify-center space-y-8 md:space-y-12 py-6">
+         <div className="text-center w-full max-w-2xl px-6">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#718096] font-black mb-6 md:mb-8 font-mono border-b-2 border-dashed border-[#E2E8F0] pb-2 inline-block leading-tight">
                 Identify Part of Speech for the Target Word
             </p>
-            <div className="text-3xl md:text-4xl font-sans font-medium text-[#1A365D] leading-relaxed mb-6">
+            <div className="text-2xl md:text-3xl lg:text-4xl font-sans font-medium text-[#1A365D] leading-relaxed mb-6">
                {current.sentence.split(' ').map((word, i) => {
                   const cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
                   const isTarget = cleanWord.toLowerCase() === current.targetWord.toLowerCase();
                   return (
                     <span key={i} className={cn(
-                        "inline-block mr-2 px-1",
-                        isTarget && "bg-[#D69E2E] text-white font-bold"
+                        "inline-block mr-1 md:mr-2 px-1 rounded-sm transition-all",
+                        isTarget && "bg-[#D69E2E] text-white font-black shadow-md -rotate-1 scale-110 mx-1"
                     )}>
                         {word}
                     </span>
@@ -148,7 +150,7 @@ export default function PosArena({ onExit, onFinish }: Props) {
             </div>
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-4xl px-8">
+         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-5xl px-4 md:px-8">
             {current.options.map((opt, idx) => {
                 const isCorrect = idx === current.answerIndex;
                 const isSelected = idx === selectedIdx;
@@ -160,7 +162,7 @@ export default function PosArena({ onExit, onFinish }: Props) {
                         disabled={gameState !== 'ACTIVE'}
                         onClick={() => handleSelect(idx)}
                         className={cn(
-                            "group p-6 border-2 transition-all flex flex-col items-center justify-center gap-3 relative overflow-hidden gb-card",
+                            "group p-6 border-2 transition-all flex flex-col items-center justify-center gap-3 relative overflow-hidden gb-card min-h-[100px] md:min-h-[140px]",
                             gameState === 'ACTIVE' 
                               ? "border-[#E2E8F0] hover:border-[#1A365D] hover:shadow-lg" 
                               : isCorrect 
@@ -170,12 +172,12 @@ export default function PosArena({ onExit, onFinish }: Props) {
                                   : "opacity-40 grayscale pointer-events-none"
                         )}
                     >
-                        <span className="text-xs font-mono font-bold opacity-40 uppercase tracking-widest absolute top-2 left-2">
+                        <span className="text-[9px] md:text-xs font-mono font-bold opacity-40 uppercase tracking-widest absolute top-2 left-2">
                            Option {labels[idx]}
                         </span>
-                        <span className="text-xl font-bold uppercase tracking-tight">{opt}</span>
-                        {gameState !== 'ACTIVE' && isCorrect && <CheckCircle2 size={16} className="text-[#38A169]" />}
-                        {gameState !== 'ACTIVE' && isSelected && !isCorrect && <XCircle size={16} className="text-red-600" />}
+                        <span className="text-lg md:text-xl font-bold uppercase tracking-tight">{opt}</span>
+                        {gameState !== 'ACTIVE' && isCorrect && <CheckCircle2 size={16} className="text-[#38A169] md:w-5 md:h-5" />}
+                        {gameState !== 'ACTIVE' && isSelected && !isCorrect && <XCircle size={16} className="text-red-600 md:w-5 md:h-5" />}
                     </button>
                 );
             })}

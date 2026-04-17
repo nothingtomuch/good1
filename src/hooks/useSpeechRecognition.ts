@@ -11,7 +11,7 @@ export function useSpeechRecognition() {
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = false;
-      recognitionRef.current.lang = 'en-US';
+      recognitionRef.current.lang = 'en-GB';
 
       recognitionRef.current.onresult = (event: any) => {
         const text = event.results[0][0].transcript;
@@ -38,9 +38,21 @@ export function useSpeechRecognition() {
         
         setTranscript('');
         setIsListening(true);
-        recognitionRef.current.start();
+        
+        // Small delay to ensure synthesis is aborted and hardware released
+        setTimeout(() => {
+          try {
+            recognitionRef.current.start();
+          } catch (err: any) {
+            // If already started, just ignore
+            if (err.name !== 'InvalidStateError') {
+              console.error('Failed to start speech recognition:', err);
+              setIsListening(false);
+            }
+          }
+        }, 300);
       } catch (err) {
-        console.error('Failed to start speech recognition:', err);
+        console.error('Failed to prepare speech recognition:', err);
         setIsListening(false);
       }
     } else {

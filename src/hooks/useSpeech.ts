@@ -5,23 +5,45 @@ export function useSpeech() {
     // Cancel any ongoing speech
     window.speechSynthesis.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Attempt to find a British English voice
-    const voices = window.speechSynthesis.getVoices();
-    const brVoice = voices.find(v => v.lang === 'en-GB' || v.lang === 'en_GB');
-    if (brVoice) {
-      utterance.voice = brVoice;
-    }
-    
-    utterance.lang = 'en-GB';
-    utterance.rate = 0.9; // Slightly slower for clarity
-    
-    if (onEnd) {
-      utterance.onend = onEnd;
-    }
+    // Small delay to ensure previous speech is canceled
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      const setVoiceAndSpeak = () => {
+        const voices = window.speechSynthesis.getVoices();
+        // Priority: British English -> English -> Any
+        const brVoice = voices.find(v => v.lang === 'en-GB' || v.lang === 'en_GB');
+        const enVoice = voices.find(v => v.lang.startsWith('en'));
+        
+        utterance.voice = brVoice || enVoice || voices[0] || null;
+        utterance.lang = utterance.voice?.lang || 'en-GB';
+        utterance.rate = 0.85; // Slightly slower for clarity
+        
+        if (onEnd) {
+          utterance.onend = onEnd;
+          utterance.onerror = (err) => {
+            console.error('Speech synthesis error:', err);
+            onEnd(); // Call onEnd even on error to prevent UI stuck
+          };
+        }
 
-    window.speechSynthesis.speak(utterance);
+        window.speechSynthesis.speak(utterance);
+      };
+
+      if (window.speechSynthesis.getVoices().length > 0) {
+        setVoiceAndSpeak();
+      } else {
+        // Voices not loaded yet, wait for them
+        window.speechSynthesis.onvoiceschanged = () => {
+          setVoiceAndSpeak();
+          window.speechSynthesis.onvoiceschanged = null; // Clean up
+        };
+        // Fallback speak anyway if voiceschanged doesn't fire
+        setTimeout(() => {
+            if (!utterance.voice) setVoiceAndSpeak();
+        }, 100);
+      }
+    }, 50);
   }, []);
 
   const stop = useCallback(() => {
