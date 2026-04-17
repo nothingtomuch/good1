@@ -161,26 +161,26 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6 relative">
-        <div className="w-full max-w-xl flex flex-col items-center space-y-12">
+      <div className="flex-1 flex flex-col items-center justify-start md:justify-center py-8 md:py-6 px-4 md:px-6 relative min-h-[400px]">
+        <div className="w-full max-w-xl flex flex-col items-center space-y-8 md:space-y-12">
           {/* Audio Trigger Cluster */}
           <div className="relative group">
             {gameState === 'PLAYING' && (
-               <div className="absolute inset-0 -m-6 md:-m-8 border-2 border-dashed border-[#1A365D]/20 rounded-full animate-[spin_10s_linear_infinite]" />
+               <div className="absolute inset-0 -m-8 border-2 border-dashed border-[#1A365D]/20 rounded-full animate-[spin_10s_linear_infinite]" />
             )}
             
             <button
               disabled={playsCount >= 3 || gameState === 'RESULT'}
               onClick={handlePlayAudio}
               className={cn(
-                "w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#1A365D] flex flex-col items-center justify-center gap-2 transition-all relative z-10",
+                "w-40 h-40 rounded-full border-4 border-[#1A365D] flex flex-col items-center justify-center gap-2 transition-all relative z-10",
                 playsCount < 3 && gameState !== 'RESULT' 
                   ? "bg-white hover:bg-[#F7FAFC] shadow-xl cursor-pointer" 
                   : "bg-gray-100 opacity-50 cursor-not-allowed border-[#E2E8F0] text-[#718096]"
               )}
             >
-              <Volume2 size={32} className={cn("md:w-10 md:h-10", gameState === 'PLAYING' ? "animate-pulse text-[#1A365D]" : "text-[#1A365D]")} />
-              <span className="text-[8px] md:text-[9px] font-mono uppercase tracking-[0.2em] font-bold px-4 text-center">
+              <Volume2 size={40} className={gameState === 'PLAYING' ? "animate-pulse text-[#1A365D]" : "text-[#1A365D]"} />
+              <span className="text-[9px] font-mono uppercase tracking-[0.2em] font-bold">
                 {playsCount === 0 ? "Play Word" : `Replay (${3 - playsCount})`}
               </span>
             </button>
@@ -194,17 +194,17 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
                  exit={{ opacity: 0, y: -10 }}
                  className="flex flex-col items-center gap-6 w-full"
                >
-                 <div className="w-full max-w-[500px] p-6 md:p-10 border-4 border-[#1A365D] relative">
+                 <div className="w-full max-w-[500px] p-10 border-4 border-[#1A365D] relative">
                     <input
                       autoFocus
                       type="text"
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-                      placeholder="TYPE"
-                      className="w-full text-center text-2xl md:text-4xl font-black uppercase tracking-[0.2em] md:tracking-[0.3em] outline-none placeholder:text-[#1A365D]/5 bg-transparent text-[#1A365D]"
+                      placeholder="TYPE SPELLING"
+                      className="w-full text-center text-4xl font-black uppercase tracking-[0.3em] outline-none placeholder:text-[#1A365D]/5 bg-transparent text-[#1A365D]"
                     />
-                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 bg-white text-[#718096] text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">
+                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 bg-white text-[#718096] text-[10px] font-bold uppercase tracking-widest">
                        Verify and Press Enter
                     </div>
                  </div>

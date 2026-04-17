@@ -158,14 +158,14 @@ export default function SynonymAntonymArena({ onExit, onFinish }: Props) {
         <div className="max-w-4xl mx-auto space-y-12">
            <div className="text-center space-y-4">
               <span className="text-[11px] font-mono tracking-[0.4em] uppercase text-[#718096] font-bold">Target Lexeme (Set {index + 1})</span>
-              <div className="p-12 border-4 border-[#1A365D]">
-                <h3 className="text-7xl font-black tracking-tighter uppercase text-[#1A365D]">
+              <div className="p-6 md:p-12 border-2 md:border-4 border-[#1A365D]">
+                <h3 className="text-3xl md:text-5xl lg:text-7xl font-black tracking-tighter uppercase text-[#1A365D] leading-tight">
                   {current.word} <span className="text-[#D69E2E] font-mono opacity-60">({current.synonymHint})</span>
                 </h3>
               </div>
            </div>
 
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
              {/* Synonym Block */}
              <div className={cn(
                "p-8 border-2 relative transition-all gb-card",
