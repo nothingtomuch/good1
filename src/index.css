@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  --color-primary: #1A365D;
+  --color-accent: #D69E2E;
+  --color-bg: #F7FAFC;
+  --color-border: #E2E8F0;
+  --color-text: #2D3748;
+  --color-white: #FFFFFF;
+  --color-green: #38A169;
+}
+
+@layer base {
+  body {
+    @apply antialiased bg-[#F7FAFC] text-[#2D3748];
+  }
+}
+
+/* Custom theme components */
+@layer components {
+  .gb-btn {
+    @apply px-7 py-3.5 border-2 border-[#1A365D] bg-transparent text-[#1A365D] font-bold uppercase cursor-pointer text-[0.85rem] tracking-wider transition-all hover:bg-[#1A365D]/5 active:scale-95;
+  }
+  .gb-btn-fill {
+    @apply bg-[#1A365D] text-white hover:bg-[#1A365D]/90;
+  }
+  .gb-btn-accent {
+    @apply bg-[#D69E2E] border-[#D69E2E] text-white hover:bg-[#D69E2E]/90;
+  }
+  .gb-card {
+    @apply p-5 bg-[#F7FAFC] border border-[#E2E8F0];
+  }
+}
