@@ -182,7 +182,7 @@ export default function SynonymAntonymArena({ onExit, onFinish }: Props) {
                   />
                   {gameState === 'RESULT' && (
                     <div className="mt-4 flex items-center justify-between">
-                       <p className="text-xs font-bold uppercase tracking-wider text-[#718096]">Target: {current.synonym[0]}</p>
+                       <p className="text-xs font-bold uppercase tracking-wider text-[#718096]">Target: {current.synonym[0]} {current.synonym.length > 1 && `(or ${current.synonym[1]})`}</p>
                        {correctFlags.synonym ? <CheckCircle2 size={20} className="text-[#38A169]" /> : <XCircle size={20} className="text-red-600" />}
                     </div>
                   )}
@@ -205,7 +205,7 @@ export default function SynonymAntonymArena({ onExit, onFinish }: Props) {
                   />
                   {gameState === 'RESULT' && (
                     <div className="mt-4 flex items-center justify-between">
-                       <p className="text-xs font-bold uppercase tracking-wider text-[#718096]">Target: {current.antonym[0]}</p>
+                       <p className="text-xs font-bold uppercase tracking-wider text-[#718096]">Target: {current.antonym[0]} {current.antonym.length > 1 && `(or ${current.antonym[1]})`}</p>
                        {correctFlags.antonym ? <CheckCircle2 size={20} className="text-[#38A169]" /> : <XCircle size={20} className="text-red-600" />}
                     </div>
                   )}
