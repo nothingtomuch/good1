@@ -19,7 +19,7 @@ export const VOL_III_B_SYNONYMS: SynonymAntonymEntry[] = [
   { word: "PROSPER", synonymHint: "F", synonym: ["FLOURISH", "BLOSSOM", "MULTIPLY"], antonym: ["FAIL", "SHRINK", "WITHER", "DECREASE", "FADE", "DECAY", "DETERIORATE", "DECLINE"] },
   { word: "GUARD", synonymHint: "D", synonym: ["DEFEND", "ESCORT", "PATROL"], antonym: ["ATTACK", "ABANDON", "DESERT", "ENDANGER", "LEAVE", "NEGLECT"] },
   { word: "DETERMINE", synonymHint: "D", synonym: ["DECIDE", "REGULATE", "CONCLUDE"], antonym: ["HESITATE", "WAVER", "BEGIN", "HINDER", "REFUSE", "START", "NEGLECT", "CONFUSE"] },
-  { word: "FREEDOM", synonymHint: "P", synonym: ["POWER", "PRIVILEGE", "PERMISSION", "INDEPENDENCE"], antonym: ["SLAVERY", "RESTRICTION", "CONFINEMENT", "IMPRISONMENT", "INABILITY", "INCAPACITY"] },
+  { word: "FREEDOM", synonymHint: "P", synonym: ["POWER", "PRIVILEGE", "PERMISSION", "INDEPENDENCE"], antonym: ["WEAKNESS", "WEAK", "INABILITY", "INCAPACITY", "SLAVERY", "RESTRICTION", "CONFINEMENT", "IMPRISONMENT"] },
   { word: "PROPER", synonymHint: "G", synonym: ["GOOD", "GENUINE", "FITTING", "USEFUL"], antonym: ["BAD", "IMPROPER", "UNFITTING", "UNSUITABLE", "INAPPROPRIATE", "HARMFUL"] },
   { word: "EFFECTIVE", synonymHint: "V", synonym: ["VALID", "EFFICIENT", "USEFUL"], antonym: ["INVALID", "HELPLESS", "INEFFECTIVE", "INSUFFICIENT", "WEAK", "USELESS"] },
   { word: "INTACT", synonymHint: "F", synonym: ["FLAWLESS", "PERFECT", "UNBLEMISHED"], antonym: ["FLAWED", "BROKEN", "DAMAGED", "HARMED", "IMPERFECT", "DEFECTIVE", "BAD"] },
@@ -31,7 +31,7 @@ export const VOL_III_B_SYNONYMS: SynonymAntonymEntry[] = [
   { word: "PRIOR", synonymHint: "P", synonym: ["PRECEDING", "PREVIOUS", "EARLIER"], antonym: ["FOLLOWING", "LATER", "AFTER", "CURRENT", "FUTURE", "PRESENT", "LAST"] },
   { word: "FORWARD", synonymHint: "A", synonym: ["AHEAD", "LEADING", "PROGRESSIVE"], antonym: ["BACKWARD", "BACK", "LATE", "LATER", "BEHIND", "LOW", "INFERIOR"] },
   { word: "RIGID", synonymHint: "H", synonym: ["HARSH", "RIGOROUS", "INFLEXIBLE"], antonym: ["GENTLE", "SOFT", "BROKEN", "EASY", "FLEXIBLE", "PLIABLE", "MILD", "LENIENT"] },
-  { word: "ABHOR", synonymHint: "D", synonym: ["DESPISE", "DETEST", "HATE"], antonym: ["LOVE", "ADMIRE", "CHERISH", "LIKE", "ACCEPT", "ADORE", "APPROVE"] },
+  { word: "ABHOR", synonymHint: "D", synonym: ["DESPISE", "DETEST", "HATE"], antonym: ["ADMIRE", "LOVE", "CHERISH", "LIKE", "ACCEPT", "ADORE", "APPROVE"] },
   
   // VOLUME III-B Sample Papers
   { word: "AFFABLE", synonymHint: "F", synonym: ["FRIENDLY"], antonym: ["HOSTILE", "UNFRIENDLY", "UNKIND", "RESERVED"] },

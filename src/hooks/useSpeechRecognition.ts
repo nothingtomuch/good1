@@ -67,11 +67,16 @@ export function useSpeechRecognition() {
     }
   }, []);
 
+  const resetTranscript = useCallback(() => {
+    setTranscript('');
+  }, []);
+
   return { 
     isListening, 
     transcript, 
     startListening, 
     stopListening,
+    resetTranscript,
     hasSupport: !!(window as any).SpeechRecognition || !!(window as any).webkitSpeechRecognition
   };
 }

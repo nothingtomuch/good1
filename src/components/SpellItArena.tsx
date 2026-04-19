@@ -26,7 +26,17 @@ interface Props {
 }
 
 export default function SpellItArena({ onExit, onFinish }: Props) {
-  const [shuffledWords] = useState(() => shuffleArray(SPELL_IT_WORDS));
+  const [shuffledWords] = useState(() => {
+    // Deduplicate words based on the word string itself
+    const uniqueMap = new Map();
+    SPELL_IT_WORDS.forEach(item => {
+      const key = item.word.toLowerCase().trim();
+      if (!uniqueMap.has(key)) {
+        uniqueMap.set(key, item);
+      }
+    });
+    return shuffleArray(Array.from(uniqueMap.values()));
+  });
   const [index, setIndex] = useState(0);
   const [input, setInput] = useState('');
   const [playsCount, setPlaysCount] = useState(0);
@@ -35,11 +45,21 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
   const [correctCount, setCorrectCount] = useState(0);
   const [feedback, setFeedback] = useState<{ isCorrect: boolean; message: string } | null>(null);
   
+  const [autoContinue, setAutoContinue] = useState(true);
+  const autoContinueTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
   const { speak } = useSpeech();
-  const { isListening, transcript, startListening, hasSupport } = useSpeechRecognition();
+  const { isListening, transcript, startListening, hasSupport, resetTranscript } = useSpeechRecognition();
   const currentWord = shuffledWords[index];
 
   const handleLevelUp = useCallback(() => {
+    if (autoContinueTimerRef.current) {
+      clearTimeout(autoContinueTimerRef.current);
+      autoContinueTimerRef.current = null;
+    }
+
+    resetTranscript();
+
     if (feedback?.isCorrect) {
       setScore(s => s + 5);
       setCorrectCount(c => c + 1);
@@ -73,6 +93,10 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
     }
   }, [currentWord, playsCount, gameState, speak, startTimer]);
 
+  const handleAskMeaning = useCallback(() => {
+    speak(`The meaning of the word is: ${currentWord.meaning}`);
+  }, [currentWord.meaning, speak]);
+
   const handleSubmit = useCallback(() => {
     const isCorrect = input.trim().toUpperCase() === currentWord.word.toUpperCase();
     setFeedback({
@@ -81,7 +105,13 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
     });
     setGameState('RESULT');
     resetTimer(10);
-  }, [input, currentWord, resetTimer]);
+
+    if (autoContinue) {
+      autoContinueTimerRef.current = setTimeout(() => {
+        handleLevelUp();
+      }, 800);
+    }
+  }, [input, currentWord, resetTimer, autoContinue, handleLevelUp]);
 
   // Handle Voice Input
   useEffect(() => {
@@ -91,13 +121,21 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
       // We clean it up: remove spaces and compare.
       const processed = transcript.replace(/\s/g, '').toUpperCase();
       setInput(processed);
+      resetTranscript();
       
       // Auto-submit if the processed transcript matches the word
       if (processed === currentWord.word.toUpperCase()) {
          setTimeout(() => handleSubmit(), 500);
       }
     }
-  }, [transcript, gameState, currentWord.word, handleSubmit]);
+  }, [transcript, gameState, currentWord.word, handleSubmit, resetTranscript]);
+
+  // Cleanup timers
+  useEffect(() => {
+    return () => {
+      if (autoContinueTimerRef.current) clearTimeout(autoContinueTimerRef.current);
+    };
+  }, []);
 
   if (gameState === 'GAMEOVER') {
     return (
@@ -169,21 +207,33 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
                <div className="absolute inset-0 -m-8 border-2 border-dashed border-[#1A365D]/20 rounded-full animate-[spin_10s_linear_infinite]" />
             )}
             
-            <button
-              disabled={playsCount >= 3 || gameState === 'RESULT'}
-              onClick={handlePlayAudio}
-              className={cn(
-                "w-40 h-40 rounded-full border-4 border-[#1A365D] flex flex-col items-center justify-center gap-2 transition-all relative z-10",
-                playsCount < 3 && gameState !== 'RESULT' 
-                  ? "bg-white hover:bg-[#F7FAFC] shadow-xl cursor-pointer" 
-                  : "bg-gray-100 opacity-50 cursor-not-allowed border-[#E2E8F0] text-[#718096]"
-              )}
-            >
-              <Volume2 size={40} className={gameState === 'PLAYING' ? "animate-pulse text-[#1A365D]" : "text-[#1A365D]"} />
-              <span className="text-[9px] font-mono uppercase tracking-[0.2em] font-bold">
-                {playsCount === 0 ? "Play Word" : `Replay (${3 - playsCount})`}
-              </span>
-            </button>
+              <div className="flex flex-col items-center gap-4 relative z-10">
+                <button
+                  disabled={playsCount >= 3 || gameState === 'RESULT'}
+                  onClick={handlePlayAudio}
+                  className={cn(
+                    "w-40 h-40 rounded-full border-4 border-[#1A365D] flex flex-col items-center justify-center gap-2 transition-all relative",
+                    playsCount < 3 && gameState !== 'RESULT' 
+                      ? "bg-white hover:bg-[#F7FAFC] shadow-xl cursor-pointer" 
+                      : "bg-gray-100 opacity-50 cursor-not-allowed border-[#E2E8F0] text-[#718096]"
+                  )}
+                >
+                  <Volume2 size={40} className={gameState === 'PLAYING' ? "animate-pulse text-[#1A365D]" : "text-[#1A365D]"} />
+                  <span className="text-[9px] font-mono uppercase tracking-[0.2em] font-bold">
+                    {playsCount === 0 ? "Play Word" : `Replay (${3 - playsCount})`}
+                  </span>
+                </button>
+
+                {(gameState === 'PLAYING' || gameState === 'IDLE') && (
+                  <button
+                    onClick={handleAskMeaning}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#1A365D] text-[#1A365D] rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#1A365D] hover:text-white transition-all shadow-md relative z-10"
+                  >
+                    <Info size={14} />
+                    Ask Meaning
+                  </button>
+                )}
+              </div>
           </div>
 
           <AnimatePresence mode="wait">
@@ -277,16 +327,31 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
       </div>
 
       {/* Progress Indicator */}
-      <div className="mt-auto">
-          <div className="flex justify-between items-end mb-2">
-            <span className="text-[10px] uppercase font-bold text-[#718096] tracking-widest">Arena Progress</span>
-            <span className="text-[10px] font-mono font-bold text-[#1A365D] uppercase">{index + 1} / {SPELL_IT_WORDS.length} Modules</span>
+      <div className="mt-8 space-y-4">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase font-bold text-[#718096] tracking-widest">Arena Progress</span>
+              <span className="text-[10px] font-mono font-bold text-[#1A365D] uppercase">{index + 1} / {shuffledWords.length} Modules</span>
+            </div>
+            
+            <button 
+              onClick={() => setAutoContinue(!autoContinue)}
+              className={cn(
+                "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all text-[10px] font-bold uppercase tracking-wider",
+                autoContinue 
+                  ? "bg-[#1A365D] text-white border-[#1A365D]" 
+                  : "bg-white text-[#718096] border-gray-200"
+              )}
+            >
+              <RotateCcw size={12} className={autoContinue ? "animate-spin-slow" : ""} />
+              Auto-Continue: {autoContinue ? "ON" : "OFF"}
+            </button>
           </div>
           <div className="progress-indicator">
             <motion.div 
                 className="progress-bar" 
                 initial={{ width: 0 }}
-                animate={{ width: `${((index + 1) / SPELL_IT_WORDS.length) * 100}%` }}
+                animate={{ width: `${((index + 1) / shuffledWords.length) * 100}%` }}
             />
           </div>
       </div>

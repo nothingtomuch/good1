@@ -2,7 +2,7 @@ import { SynonymAntonymEntry } from '../data';
 
 export const VOL_VII_B_SYNONYMS: SynonymAntonymEntry[] = [
   // VOLUME VII-B Exercises 1-30
-  { word: "BARREN", synonymHint: "V", synonym: ["VACANT", "VOID", "VALUELESS", "WASTE", "EMPTY"], antonym: ["FERTILE", "OCCUPIED", "PRODUCTIVE", "FRUITFUL"] },
+  { word: "BARREN", synonymHint: "V", synonym: ["VACANT", "VOID", "VALUELESS", "WASTE", "EMPTY"], antonym: ["OCCUPIED", "FULL", "FERTILE", "PRODUCTIVE", "FRUITFUL"] },
   { word: "CORDIAL", synonymHint: "G", synonym: ["GENIAL", "GRACIOUS", "FRIENDLY", "FERVENT"], antonym: ["HOSTILE", "UNFRIENDLY", "MOROSE", "COLD"] },
   { word: "DISCOLOUR", synonymHint: "M", synonym: ["MAR", "BLEMISH", "BLACKEN"], antonym: ["CLEAN", "SHINY", "WHITEN", "LIGHTEN", "FIX"] },
   { word: "GENERAL", synonymHint: "P", synonym: ["PUBLIC", "STANDARD", "BASIC"], antonym: ["SPECIALIST", "PRIVATE", "RESTRICTED", "EXCEPTIONAL"] },
@@ -28,13 +28,13 @@ export const VOL_VII_B_SYNONYMS: SynonymAntonymEntry[] = [
   { word: "GOOEY", synonymHint: "S", synonym: ["STICKY", "SENTIMENTAL", "MUSHY"], antonym: ["DRY", "HARD", "COLD", "PRACTICAL", "SLICK"] },
   { word: "RIGID", synonymHint: "T", synonym: ["TIGHT", "STRICT", "FIXED"], antonym: ["FLEXIBLE", "LENIENT", "LOOSE", "EASY"] },
   { word: "ABET", synonymHint: "S", synonym: ["SUPPORT", "ENCOURAGE", "ASSIST"], antonym: ["HINDER", "OPPOSE", "NEGLECT", "IMPEDE"] },
-  { word: "LUCID", synonymHint: "E", synonym: ["ELOQUENT", "EVIDENT", "EXPLICIT", "RADIANT", "RATIONAL"], antonym: ["CONFUSING", "INARTICULATE", "UNCLEAR", "AMBIGUOUS", "DARK"] },
+  { word: "LUCID", synonymHint: "E", synonym: ["ELOQUENT", "EVIDENT", "EXPLICIT", "RADIANT", "RATIONAL"], antonym: ["INARTICULATE", "CONFUSING", "UNCLEAR", "AMBIGUOUS", "DARK"] },
   { word: "COSTLY", synonymHint: "E", synonym: ["EXQUISITE", "EXPENSIVE", "EXTRAVAGANT", "VALUABLE", "FINE"], antonym: ["CHEAP", "CRUDE", "INEXPENSIVE", "WORTHLESS", "POOR"] },
   { word: "ESSENTIAL", synonymHint: "C", synonym: ["CRUCIAL", "PRIMARY", "VITAL"], antonym: ["INESSENTIAL", "UNIMPORTANT", "OPTIONAL", "MINOR", "TRIVIAL"] },
-  { word: "ROBUST", synonymHint: "H", synonym: ["HEALTHY", "DURABLE", "VIGOROUS"], antonym: ["WEAK", "SICKLY", "FRAIL", "FRAGILE", "INSIPID"] },
+  { word: "ROBUST", synonymHint: "H", synonym: ["HEALTHY", "DURABLE", "VIGOROUS"], antonym: ["SICKLY", "WEAK", "FRAIL", "FRAGILE", "INSIPID"] },
   
   // VOLUME VII-B Sample Papers
-  { word: "INSIPID", synonymHint: "J", synonym: ["JEJUNE"], antonym: ["SOPHISTICATED", "MATURE", "FASCINATING", "INSPIRED", "TASTY"] },
+  { word: "INSIPID", synonymHint: "J", synonym: ["JEJUNE"], antonym: ["FASCINATING", "MATURE", "SOPHISTICATED", "INSPIRED", "TASTY"] },
   { word: "FICTION", synonymHint: "I", synonym: ["ILLUSION"], antonym: ["REALITY", "FACT", "TRUTH"] },
   { word: "RIDICULE", synonymHint: "C", synonym: ["CONTEMPT"], antonym: ["RESPECT", "ADMIRE", "LAUD"] },
   { word: "ADVANCE", synonymHint: "I", synonym: ["IMPROVE"], antonym: ["WORSEN", "IMPAIR", "DETERIORATE", "RETREAT"] },
