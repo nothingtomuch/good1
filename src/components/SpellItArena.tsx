@@ -11,7 +11,8 @@ import {
   Info,
   Trophy,
   Mic,
-  MicOff
+  MicOff,
+  Languages
 } from 'lucide-react';
 import { useSpeech } from '../hooks/useSpeech';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
@@ -97,6 +98,14 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
     speak(`The meaning of the word is: ${currentWord.meaning}`);
   }, [currentWord.meaning, speak]);
 
+  const handleCheckOrigin = useCallback(() => {
+    if (currentWord.origin) {
+      speak(`The origin of the word is: ${currentWord.origin}`);
+    } else {
+      speak("The origin for this word is not specified.");
+    }
+  }, [currentWord.origin, speak]);
+
   const handleSubmit = useCallback(() => {
     const isCorrect = input.trim().toUpperCase() === currentWord.word.toUpperCase();
     setFeedback({
@@ -109,7 +118,7 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
     if (autoContinue) {
       autoContinueTimerRef.current = setTimeout(() => {
         handleLevelUp();
-      }, 800);
+      }, 400); // Faster transition
     }
   }, [input, currentWord, resetTimer, autoContinue, handleLevelUp]);
 
@@ -117,15 +126,15 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
   useEffect(() => {
     if (transcript && gameState === 'PLAYING') {
       // User says "a p i a r y" or "apiary"
-      // Most recognizers join letters or return the word.
-      // We clean it up: remove spaces and compare.
       const processed = transcript.replace(/\s/g, '').toUpperCase();
-      setInput(processed);
-      resetTranscript();
-      
-      // Auto-submit if the processed transcript matches the word
-      if (processed === currentWord.word.toUpperCase()) {
-         setTimeout(() => handleSubmit(), 500);
+      if (processed) {
+        setInput(processed);
+        resetTranscript();
+        
+        // Auto-submit if the processed transcript matches the word
+        if (processed === currentWord.word.toUpperCase()) {
+           setTimeout(() => handleSubmit(), 200);
+        }
       }
     }
   }, [transcript, gameState, currentWord.word, handleSubmit, resetTranscript]);
@@ -225,13 +234,22 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
                 </button>
 
                 {(gameState === 'PLAYING' || gameState === 'IDLE') && (
-                  <button
-                    onClick={handleAskMeaning}
-                    className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#1A365D] text-[#1A365D] rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#1A365D] hover:text-white transition-all shadow-md relative z-10"
-                  >
-                    <Info size={14} />
-                    Ask Meaning
-                  </button>
+                  <div className="flex flex-wrap justify-center gap-3 relative z-10">
+                    <button
+                      onClick={handleAskMeaning}
+                      className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#1A365D] text-[#1A365D] rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#1A365D] hover:text-white transition-all shadow-md"
+                    >
+                      <Info size={14} />
+                      Ask Meaning
+                    </button>
+                    <button
+                      onClick={handleCheckOrigin}
+                      className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#D69E2E] text-[#D69E2E] rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#D69E2E] hover:text-white transition-all shadow-md"
+                    >
+                      <Languages size={14} />
+                      Check Origin
+                    </button>
+                  </div>
                 )}
               </div>
           </div>
@@ -292,7 +310,10 @@ export default function SpellItArena({ onExit, onFinish }: Props) {
                     </div>
                     <div className="gb-card">
                       <span className="info-title">Etymology & Meaning</span>
-                      <p className="info-content text-[#2D3748] italic">{currentWord.meaning}</p>
+                      <p className="info-content text-[#2D3748] italic">
+                        {currentWord.origin && <span className="block mb-1 font-bold text-[#D69E2E]">Origin: {currentWord.origin}</span>}
+                        {currentWord.meaning}
+                      </p>
                     </div>
                  </div>
 

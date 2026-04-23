@@ -2,6 +2,7 @@ import { VOL_VII_A_WORDS } from './data/spellWordsBatch1';
 import { VOL_VII_A_WORDS_2 } from './data/spellWordsBatch2';
 import { VOL_VII_B_WORDS } from './data/spellWordsBatch3';
 import { VOL_VII_B_WORDS_2 } from './data/spellWordsBatch4';
+import { TOUGH_WORDS_BATCH_1 } from './data/toughSpellingWords';
 import { VOL_VII_B_SYNONYMS as BATCH_VII_B_SYNONYMS } from './data/synonymsBatch1';
 import { VOL_III_B_SYNONYMS as BATCH_III_B_SYNONYMS } from './data/synonymsBatch2';
 import { AURAL_SKILLS as AURAL_SKILLS_DATA } from './data/synonymsAndAural';
@@ -12,6 +13,7 @@ export interface WordEntry {
   word: string;
   script: string;
   meaning: string;
+  origin?: string;
 }
 
 export interface SynonymAntonymEntry {
@@ -45,12 +47,17 @@ export interface PosEntry {
   answerIndex: number;
 }
 
-// Consolidated Exports
-export const SPELL_IT_WORDS: WordEntry[] = [
+// Archived spelling lists (saved temporarily)
+export const ARCHIVED_SPELL_WORDS: WordEntry[] = [
   ...VOL_VII_A_WORDS,
   ...VOL_VII_A_WORDS_2,
   ...VOL_VII_B_WORDS,
   ...VOL_VII_B_WORDS_2
+];
+
+// Current active spelling list (500 tough words)
+export const SPELL_IT_WORDS: WordEntry[] = [
+  ...TOUGH_WORDS_BATCH_1
 ];
 
 export const SYNONYM_ANTONYM_WORDS_FULL: SynonymAntonymEntry[] = [
